@@ -1,18 +1,11 @@
-import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
 import React from 'react';
 import { ApolloProvider, Query } from "react-apollo";
-import Album from './Album';
 import './App.css';
-import Artist from './Artist';
+import JukeboxAppBar from './JukeboxAppBar';
 import Search from './Search';
 import Songs from './Songs';
 
@@ -43,17 +36,7 @@ class App extends React.Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6">
-              Jukebox
-          </Typography>
-            <Button color="inherit">Login</Button>
-          </Toolbar>
-        </AppBar>
+        <JukeboxAppBar />
         <Container maxWidth="xl">
           <Box my={4}>
             <Container><Box my={4}><Search handleOnChange={this.handleOnChange} /></Box></Container>
