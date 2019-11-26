@@ -45,9 +45,9 @@ class Songs extends React.Component {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">Artist</TableCell>
-                            <TableCell align="right">Album</TableCell>
-                            <TableCell align="right">Name</TableCell>
+                            <TableCell align="left">Artist</TableCell>
+                            <TableCell align="left">Album</TableCell>
+                            <TableCell align="left">Name</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -59,12 +59,12 @@ class Songs extends React.Component {
                                             {song.artist.name}
                                         </Button>
                                     </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="left">
                                         <Button href="#" onClick={() => this.props.history.push(`/albums/${song.album.id}`)}>
                                             {song.album.name}
                                         </Button>
                                     </TableCell>
-                                    <TableCell align="right">
+                                    <TableCell align="left">
                                         <Button href="#" onClick={() => this.props.history.push(`/songs/${song.id}`)}>
                                             {song.name}
                                         </Button>
