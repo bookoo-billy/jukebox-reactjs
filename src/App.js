@@ -56,7 +56,7 @@ class App extends React.Component {
         </AppBar>
         <Container maxWidth="xl">
           <Box my={4}>
-            <Search handleOnChange={this.handleOnChange} />
+            <Container><Box my={4}><Search handleOnChange={this.handleOnChange} /></Box></Container>
             <Query query={gql`
             query Songs($search: String) {
               searchSongs(search: $search) {
@@ -84,8 +84,6 @@ class App extends React.Component {
 
                 return (
                   <div>
-                    <Artist />
-                    <Album />
                     <Songs songs={data.searchSongs} />
                   </div>
                 );

@@ -27,7 +27,7 @@ class Search extends React.Component {
         const classes = this.useStyles();
 
         return (
-            <FormControl className={classes.margin}>
+            <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="input-with-icon-adornment">Search</InputLabel>
                 <Input
                     id="input-with-icon-adornment"
