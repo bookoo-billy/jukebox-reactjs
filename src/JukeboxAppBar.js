@@ -20,9 +20,7 @@ import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PropTypes from 'prop-types';
 import React from 'react';
-
-
-
+import { withRouter } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -73,25 +71,25 @@ function JukeboxAppBar(props) {
             <div className={classes.toolbar} />
             <Divider />
             <List>
-                <ListItem button key='Artists'>
+                <ListItem button key='Artists' onClick={() => props.history.push("/artists")}>
                     <ListItemIcon>
                         <PersonIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Artists"} />
                 </ListItem>
-                <ListItem button key='Albums'>
+                <ListItem button key='Albums' onClick={() => props.history.push("/albums")}>
                     <ListItemIcon>
                         <AlbumIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Albums"} />
                 </ListItem>
-                <ListItem button key='Songs'>
+                <ListItem button key='Songs' onClick={() => props.history.push("/songs")}>
                     <ListItemIcon>
                         <MusicNoteIcon />
                     </ListItemIcon>
                     <ListItemText primary={"Songs"} />
                 </ListItem>
-                <ListItem button key='Playlists'>
+                <ListItem button key='Playlists' onClick={() => props.history.push("/playlists")}>
                     <ListItemIcon>
                         <QueueMusicIcon />
                     </ListItemIcon>
@@ -100,11 +98,11 @@ function JukeboxAppBar(props) {
             </List>
             <Divider />
             <List>
-                <ListItem button key="Profile">
+                <ListItem button key="Profile" onClick={() => props.history.push("/profile")}>
                     <ListItemIcon><AccountCircleIcon /></ListItemIcon>
                     <ListItemText primary="Profile" />
                 </ListItem>
-                <ListItem button key="Settings">
+                <ListItem button key="Settings" onClick={() => props.history.push("/settings")}>
                     <ListItemIcon><SettingsIcon /></ListItemIcon>
                     <ListItemText primary="Settings" />
                 </ListItem>
@@ -176,4 +174,4 @@ JukeboxAppBar.propTypes = {
     container: PropTypes.instanceOf(typeof Element === 'undefined' ? Object : Element),
 };
 
-export default JukeboxAppBar;
+export default withRouter(JukeboxAppBar);

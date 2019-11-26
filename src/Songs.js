@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
+import { withRouter } from "react-router-dom";
 
 class Songs extends React.Component {
 
@@ -17,15 +18,15 @@ class Songs extends React.Component {
     }
 
     handleArtistClick(artistId) {
-        alert("Artist " + artistId + " clicked");
+        this.props.history.push(`/artists/${artistId}`);
     }
 
     handleAlbumClick(albumId) {
-        alert("Album " + albumId + " clicked");
+        this.props.history.push(`/albums/${albumId}`);
     }
 
     handleSongClick(songId) {
-        alert("Song " + songId + " clicked");
+        this.props.history.push(`/songs/${songId}`);
     }
 
     render() {
@@ -68,4 +69,4 @@ class Songs extends React.Component {
     }
 };
 
-export default Songs;
+export default withRouter(Songs);
