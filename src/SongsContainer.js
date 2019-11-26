@@ -5,33 +5,31 @@ import React from 'react';
 import { Query } from "react-apollo";
 import Search from './Search';
 import Songs from './Songs';
+import { withRouter } from "react-router-dom";
 
 class SongsContainer extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.handleOnChange = this.handleOnChange.bind(this);
-        this.state = {
-          search: {
-            value: ""
-          }
-        };
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     }
 
-    handleOnChange(event) {
-        this.setState({
-            search: {
-                value: event.target.value
-            }
-        });
+    handleSearchSubmit(event) {
+        if (event.key === "Enter") {
+            this.props.history.push(`/songs?query=${event.target.value}`);        
+        }
     }
 
     render() {
+        const search = this.props.location.search;
+        const params = new URLSearchParams(search);
+        const query = params.get('query');
+
         return (
             <Container maxWidth="xl">
                 <Box my={4}>
-                    <Container><Box my={4}><Search handleOnChange={this.handleOnChange} /></Box></Container>
+                    <Container><Box my={4}><Search handleSearchSubmit={this.handleSearchSubmit} /></Box></Container>
                     <Query query={gql`
                 query Songs($search: String) {
                     searchSongs(search: $search) {
@@ -48,7 +46,7 @@ class SongsContainer extends React.Component {
                     }
                 }
                 `}
-                        variables={{ search: this.state.search.value }}
+                        variables={{ search: query }}
                     >
                         {({ loading, error, data }) => {
                             if (loading) return <p>Loading...</p>;
@@ -70,4 +68,4 @@ class SongsContainer extends React.Component {
     }
 }
 
-export default SongsContainer;
+export default withRouter(SongsContainer);

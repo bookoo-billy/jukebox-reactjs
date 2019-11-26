@@ -4,9 +4,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import { debounce } from 'lodash';
 import React from 'react';
-
+import { withRouter } from "react-router-dom";
 
 
 class Search extends React.Component {
@@ -36,11 +35,11 @@ class Search extends React.Component {
                             <SearchIcon />
                         </InputAdornment>
                     }
-                    onChange={this.props.handleOnChange}
+                    onKeyDown={this.props.handleSearchSubmit}
                 />
             </FormControl>
         );
     }
 }
 
-export default Search;
+export default withRouter(Search);

@@ -1,4 +1,4 @@
-import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -45,19 +45,19 @@ class Songs extends React.Component {
                             this.props.songs.map(song => (
                                 <TableRow key={song.id}>
                                     <TableCell component="th" scope="row">
-                                        <Link href="#" onClick={() => this.handleArtistClick(song.artist.id)}>
+                                        <Button color="primary" onClick={() => this.handleArtistClick(song.artist.id)}>
                                             {song.artist.name}
-                                        </Link>
+                                        </Button>
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Link href="#" onClick={() => this.handleAlbumClick(song.album.id)}>
+                                        <Button href="#" onClick={() => this.handleAlbumClick(song.album.id)}>
                                             {song.album.name}
-                                        </Link>
+                                        </Button>
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Link href="#" onClick={() => this.handleSongClick(song.id)}>
+                                        <Button href="#" onClick={() => this.handleSongClick(song.id)}>
                                             {song.name}
-                                        </Link>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))
