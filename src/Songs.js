@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from '@material-ui/core/TablePagination';
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
@@ -12,24 +13,33 @@ class Songs extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleArtistClick = this.handleArtistClick.bind(this);
-        this.handleAlbumClick = this.handleAlbumClick.bind(this);
-        this.handleSongClick = this.handleSongClick.bind(this);
+        this.handleChangePage = this.handleChangePage.bind(this);
+        this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+
+        this.rowsPerPageOptions =  (props.rowsPerPageOptions && props.rowsPerPageOptions.length > 0) ? props.rowsPerPageOptions : [10, 25, 50];
+
+        this.state = {
+            rowsPerPage: this.rowsPerPageOptions[0],
+            page: 0
+        }
     }
 
-    handleArtistClick(artistId) {
-        this.props.history.push(`/artists/${artistId}`);
+    handleChangePage(event, page) {
+        this.setState({
+            page
+        });
     }
 
-    handleAlbumClick(albumId) {
-        this.props.history.push(`/albums/${albumId}`);
-    }
-
-    handleSongClick(songId) {
-        this.props.history.push(`/songs/${songId}`);
+    handleChangeRowsPerPage(event) {
+        this.setState({
+            rowsPerPage: event.target.value
+        });
     }
 
     render() {
+        const pageStart = this.state.page * this.state.rowsPerPage;
+        const pageEnd = pageStart + this.state.rowsPerPage;
+
         return (
             <Paper>
                 <Table aria-label="simple table">
@@ -42,20 +52,20 @@ class Songs extends React.Component {
                     </TableHead>
                     <TableBody>
                         {
-                            this.props.songs.map(song => (
+                            this.props.songs.slice(pageStart, pageEnd).map(song => (
                                 <TableRow key={song.id}>
                                     <TableCell component="th" scope="row">
-                                        <Button color="primary" onClick={() => this.handleArtistClick(song.artist.id)}>
+                                        <Button color="primary" onClick={() => this.props.history.push(`/artists/${song.artist.id}`)}>
                                             {song.artist.name}
                                         </Button>
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Button href="#" onClick={() => this.handleAlbumClick(song.album.id)}>
+                                        <Button href="#" onClick={() => this.props.history.push(`/albums/${song.album.id}`)}>
                                             {song.album.name}
                                         </Button>
                                     </TableCell>
                                     <TableCell align="right">
-                                        <Button href="#" onClick={() => this.handleSongClick(song.id)}>
+                                        <Button href="#" onClick={() => this.props.history.push(`/songs/${song.id}`)}>
                                             {song.name}
                                         </Button>
                                     </TableCell>
@@ -64,6 +74,15 @@ class Songs extends React.Component {
                         }
                     </TableBody>
                 </Table>
+                <TablePagination
+                    rowsPerPageOptions={this.rowsPerPageOptions}
+                    component="div"
+                    count={this.props.songs.length}
+                    rowsPerPage={this.state.rowsPerPage}
+                    page={this.state.page}
+                    onChangePage={this.handleChangePage}
+                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
             </Paper>
         );
     }
