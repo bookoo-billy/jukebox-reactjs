@@ -60,12 +60,12 @@ class Songs extends React.Component {
                                         </Button>
                                     </TableCell>
                                     <TableCell align="left">
-                                        <Button href="#" onClick={() => this.props.history.push(`/albums/${song.album.id}`)}>
+                                        <Button onClick={() => this.props.history.push(`/albums/${song.album.id}`)}>
                                             {song.album.name}
                                         </Button>
                                     </TableCell>
                                     <TableCell align="left">
-                                        <Button href="#" onClick={() => this.props.history.push(`/songs/${song.id}`)}>
+                                        <Button onClick={() => this.props.history.push(`/songs/${song.id}`)}>
                                             {song.name}
                                         </Button>
                                     </TableCell>

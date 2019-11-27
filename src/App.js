@@ -4,8 +4,10 @@ import { ApolloProvider } from "react-apollo";
 import { BrowserRouter, Route } from "react-router-dom";
 import './App.css';
 import ArtistContainer from './ArtistContainer';
+import AlbumContainer from './AlbumContainer';
 import JukeboxAppBar from './JukeboxAppBar';
-import SongContainer from './SongsContainer';
+import SongContainer from './SongContainer';
+import SongsContainer from './SongsContainer';
 
 const client = new ApolloClient({
   uri: "http://localhost:8080/graphql/"
@@ -21,8 +23,10 @@ class App extends React.Component {
       <BrowserRouter>
         <ApolloProvider client={client}>
           <JukeboxAppBar />
-          <Route path="/songs" component={SongContainer} />
-          <Route path="/artists/:artistId" component={ArtistContainer} />
+          <Route exact path="/songs" component={SongsContainer} />
+          <Route exact path="/songs/:songId" component={SongContainer} />
+          <Route exact path="/artists/:artistId" component={ArtistContainer} />
+          <Route exact path="/albums/:albumId" component={AlbumContainer} />
         </ApolloProvider>
       </BrowserRouter>
     );
