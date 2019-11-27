@@ -1,35 +1,41 @@
 import Box from '@material-ui/core/Box';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import gql from "graphql-tag";
 import React from 'react';
 import { Query } from "react-apollo";
-import Album from './Album';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Playlist from './Playlist';
 
-class AlbumContainer extends React.Component {
+class PlaylistContainer extends React.Component {
 
     render() {
         return (
             <Container maxWidth="xl">
                 <Box my={4}>
                     <Query query={gql`
-                    query Album($id: ID) {
-                        albumById(id: $id) {
+                    query Playlist($id: ID) {
+                        playlistById(id: $id) {
                             id
                             name
-                            artist {
-                                id
-                                name
-                            }
-                            songs {
-                                id
-                                name
-                                track
+                            items {
+                                timestamp
+                                song {
+                                    id
+                                    name
+                                    artist {
+                                        id
+                                        name
+                                    }
+                                    album {
+                                        id
+                                        name
+                                    }
+                                }
                             }
                         }
                     }
                     `}
-                        variables={{ id: this.props.match.params.albumId }}
+                        variables={{ id: this.props.match.params.playlistId }}
                     >
                         {({ loading, error, data }) => {
                             if (loading) return <CircularProgress color="secondary" />;
@@ -40,7 +46,7 @@ class AlbumContainer extends React.Component {
 
                             return (
                                 <div>
-                                    <Album album={data.albumById} />
+                                    <Playlist playlist={data.playlistById} />
                                 </div>
                             );
                         }}
@@ -51,4 +57,4 @@ class AlbumContainer extends React.Component {
     }
 }
 
-export default AlbumContainer;
+export default PlaylistContainer;

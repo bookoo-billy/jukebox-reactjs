@@ -10,10 +10,6 @@ import { withRouter } from "react-router-dom";
 
 class Song extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const song = this.props.song;
 

@@ -14,9 +14,6 @@ import { withRouter } from "react-router-dom";
 
 
 class Artist extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     getAvatarShort() {
         this.props.artist.name.split(" ")

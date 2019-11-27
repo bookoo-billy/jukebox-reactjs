@@ -1,17 +1,13 @@
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Container from '@material-ui/core/Container';
 import gql from "graphql-tag";
 import React from 'react';
 import { Query } from "react-apollo";
-import Playlists from './Playlists';
 import { withRouter } from "react-router-dom";
+import Playlists from './Playlists';
 
 class PlaylistsContainer extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const search = this.props.location.search;
@@ -32,7 +28,7 @@ class PlaylistsContainer extends React.Component {
                         variables={{ search: query }}
                     >
                         {({ loading, error, data }) => {
-                            if (loading) return <p>Loading...</p>;
+                            if (loading) return <CircularProgress color="secondary" />;
                             if (error) {
                                 console.log(error);
                                 return <p>Error :(</p>;

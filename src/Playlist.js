@@ -1,4 +1,3 @@
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,14 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { withRouter } from "react-router-dom";
 
-class Album extends React.Component {
-
-    getAvatarShort() {
-        this.props.album.name.split(" ")
-            .map((piece) => (piece[0].toUpperCase()))
-            .slice(0, 2)
-            .join("")
-    }
+class Playlist extends React.Component {
 
     useStyles() {
         return makeStyles(theme => ({
@@ -35,27 +27,21 @@ class Album extends React.Component {
         return (
             <Paper className={classes.root}>
                 <Grid container wrap="nowrap" spacing={2}>
-                    <Grid item>
-                        <Avatar alt={this.props.album.name}>{this.getAvatarShort()}</Avatar>
-                    </Grid>
                     <Grid item xs zeroMinWidth>
-                        <Typography noWrap variant="h3">{this.props.album.name}</Typography>
+                        <Typography noWrap variant="h3">{this.props.playlist.name}</Typography>
                     </Grid>
                 </Grid>
                 <Grid container item xs={12}>
                     <Grid container justify="center" spacing={2}>
-                        <Grid key={this.props.album.id} item>
-                            <Card key={this.props.album.id}>
+                        <Grid key={this.props.playlist.id} item>
+                            <Card key={this.props.playlist.id}>
                                 <CardContent>
-                                    <Button color="primary" onClick={() => this.props.history.push(`/albums/${this.props.album.id}`)}>
-                                        <Typography variant="h4">{this.props.album.name}</Typography>
-                                    </Button>
                                     <List>
                                         {
-                                            this.props.album.songs.map((song) => (
-                                                <ListItem key={song.id}>
-                                                    <Button onClick={() => this.props.history.push(`/songs/${song.id}`)}>
-                                                        <ListItemText>{song.track} - {song.name}</ListItemText>
+                                            this.props.playlist.items.map((item) => (
+                                                <ListItem key={item.timestamp}>
+                                                    <Button onClick={() => this.props.history.push(`/songs/${item.song.id}`)}>
+                                                        <ListItemText>{item.song.artist.name} - {item.song.name}</ListItemText>
                                                     </Button>
                                                 </ListItem>
                                             ))
@@ -71,4 +57,4 @@ class Album extends React.Component {
     }
 };
 
-export default withRouter(Album);
+export default withRouter(Playlist);

@@ -6,6 +6,7 @@ import AlbumContainer from './AlbumContainer';
 import './App.css';
 import ArtistContainer from './ArtistContainer';
 import JukeboxAppBar from './JukeboxAppBar';
+import PlaylistContainer from './PlaylistContainer';
 import PlaylistsContainer from './PlaylistsContainer';
 import SongContainer from './SongContainer';
 import SongsContainer from './SongsContainer';
@@ -15,9 +16,6 @@ const client = new ApolloClient({
 });
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
@@ -29,6 +27,7 @@ class App extends React.Component {
           <Route exact path="/artists/:artistId" component={ArtistContainer} />
           <Route exact path="/albums/:albumId" component={AlbumContainer} />
           <Route exact path="/playlists" component={PlaylistsContainer} />
+          <Route exact path="/playlists/:playlistId" component={PlaylistContainer} />
         </ApolloProvider>
       </BrowserRouter>
     );

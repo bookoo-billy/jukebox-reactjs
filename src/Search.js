@@ -10,10 +10,6 @@ import { withRouter } from "react-router-dom";
 
 class Search extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     useStyles() {
         return makeStyles(theme => ({
             margin: {
