@@ -2,10 +2,11 @@ import ApolloClient from "apollo-boost";
 import React from 'react';
 import { ApolloProvider } from "react-apollo";
 import { BrowserRouter, Route } from "react-router-dom";
+import AlbumContainer from './AlbumContainer';
 import './App.css';
 import ArtistContainer from './ArtistContainer';
-import AlbumContainer from './AlbumContainer';
 import JukeboxAppBar from './JukeboxAppBar';
+import PlaylistsContainer from './PlaylistsContainer';
 import SongContainer from './SongContainer';
 import SongsContainer from './SongsContainer';
 
@@ -27,6 +28,7 @@ class App extends React.Component {
           <Route exact path="/songs/:songId" component={SongContainer} />
           <Route exact path="/artists/:artistId" component={ArtistContainer} />
           <Route exact path="/albums/:albumId" component={AlbumContainer} />
+          <Route exact path="/playlists" component={PlaylistsContainer} />
         </ApolloProvider>
       </BrowserRouter>
     );
