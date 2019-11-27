@@ -17,7 +17,7 @@ class SongsContainer extends React.Component {
 
     handleSearchSubmit(event) {
         if (event.key === "Enter") {
-            this.props.history.push(`/songs?query=${event.target.value}`);        
+            this.props.history.push(`/songs?query=${event.target.value}`);
         }
     }
 
@@ -31,21 +31,21 @@ class SongsContainer extends React.Component {
                 <Box my={4}>
                     <Container><Box my={4}><Search handleSearchSubmit={this.handleSearchSubmit} /></Box></Container>
                     <Query query={gql`
-                query Songs($search: String) {
-                    searchSongs(search: $search) {
-                    id
-                    name
-                    album {
-                        id
-                        name
-                    }
-                    artist {
-                        id
-                        name
-                    }
-                    }
-                }
-                `}
+                            query Songs($search: String) {
+                                searchSongs(search: $search) {
+                                id
+                                name
+                                album {
+                                    id
+                                    name
+                                }
+                                artist {
+                                    id
+                                    name
+                                }
+                                }
+                            }
+                            `}
                         variables={{ search: query }}
                     >
                         {({ loading, error, data }) => {
@@ -55,9 +55,35 @@ class SongsContainer extends React.Component {
                                 return <p>Error :(</p>;
                             }
 
+                            const songsData = data;
+
                             return (
                                 <div>
-                                    <Songs songs={data.searchSongs} />
+                                    <Query query={gql`
+                                            query Playlists($search: String) {
+                                                searchPlaylists(search: $search) {
+                                                    id
+                                                    name
+                                                }
+                                            }
+                                        `}
+                                        variables={{ search: "" }}
+                                    >
+                                        {({ loading, error, data }) => {
+                                            if (loading) return <p>Loading...</p>;
+                                            if (error) {
+                                                console.log(error);
+                                                return <p>Error :(</p>;
+                                            }
+
+                                            const playlistsData = data;
+                                            return (
+                                                <div>
+                                                    <Songs songs={songsData.searchSongs} playlists={playlistsData.searchPlaylists} />
+                                                </div>
+                                            );
+                                        }}
+                                    </Query>
                                 </div>
                             );
                         }}

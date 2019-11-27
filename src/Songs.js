@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Divider from '@material-ui/core/Divider';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,6 +13,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import React from 'react';
 import { withRouter } from "react-router-dom";
@@ -22,9 +24,9 @@ class Songs extends React.Component {
         super(props);
         this.handleChangePage = this.handleChangePage.bind(this);
         this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-        this.handleMoreMenuClick = this.handleMoreMenuClick.bind(this);
-        this.handleMoreMenuClose = this.handleMoreMenuClose.bind(this);
-        this.handleMoreMenuListKeyDown = this.handleMoreMenuListKeyDown.bind(this);
+        this.handleMoreMenuClick = this.handleSongMenuClick.bind(this);
+        this.handleMoreMenuClose = this.handleSongMenuClose.bind(this);
+        this.handleMoreMenuListKeyDown = this.handleSongMenuListKeyDown.bind(this);
 
         this.rowsPerPageOptions = (props.rowsPerPageOptions && props.rowsPerPageOptions.length > 0) ? props.rowsPerPageOptions : [10, 25, 50];
 
@@ -34,23 +36,43 @@ class Songs extends React.Component {
         }
     }
 
-    handleMoreMenuClick(e, songId) {
+    handleSongMenuAddToPlaylistClick(e, songId) {
+        this.setState({
+            subMenu: songId,
+            subAnchorEl: e.currentTarget
+        })
+    }
+
+    handlePlaylistMenuClick(e, songId, playlistId) {
+
+    }
+
+    handleSongMenuClick(e, songId) {
         this.setState({
             moreMenu: songId,
             anchorEl: e.currentTarget
         });
     }
 
-    handleMoreMenuClose(e, songId) {
+    handleSongMenuClose(e, songId) {
         this.setState({
             moreMenu: undefined,
-            anchorEl: undefined
+            anchorEl: undefined,
+            subMenu: undefined,
+            subAnchorEl: undefined
         });
     }
 
-    handleMoreMenuListKeyDown(e, songId) {
+    handleSongMenuListKeyDown(e, songId) {
         this.setState({
             moreMenu: songId,
+            anchorEl: e.currentTarget
+        })
+    }
+
+    handlePlaylistMenuListKeyDown(e, songId) {
+        this.setState({
+            subMenu: songId,
             anchorEl: e.currentTarget
         })
     }
@@ -65,6 +87,38 @@ class Songs extends React.Component {
         this.setState({
             rowsPerPage: event.target.value
         });
+    }
+
+    getPlaylistSubMenu(song) {
+        let playlistMenuItems = this.props.playlists.map((playlist) => (
+            <MenuItem onClick={(e) => this.handlePlaylistMenuClick(e, song.id, playlist.id)}>{playlist.name}</MenuItem>
+        ));
+
+        if (playlistMenuItems.length > 0) {
+            playlistMenuItems.push(<Divider />)
+        }
+
+        return (<MenuItem onClick={(e) => this.handleSongMenuAddToPlaylistClick(e, song.id)}>
+            <React.Fragment>
+                Add to Playlist
+                <ArrowRightIcon />
+                <Popper open={this.state.subMenu == song.id} role={undefined} anchorEl={this.state.subAnchorEl} placement="right-start" transition>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                            {...TransitionProps}
+                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                        >
+                            <Paper>
+                                <MenuList autoFocusItem={this.state.subMenu == song.id} id="subMenu-list-grow" onKeyDown={(e) => this.handlePlaylistMenuListKeyDown(e, song.id)}>
+                                    { playlistMenuItems }
+                                    <MenuItem onClick={(e) => this.handleSongMenuClose(e, song.id)}>New Playlist</MenuItem>
+                                </MenuList>
+                            </Paper>
+                        </Grow>
+                    )}
+                </Popper>
+            </React.Fragment>
+        </MenuItem>);
     }
 
     render() {
@@ -102,20 +156,20 @@ class Songs extends React.Component {
                                         </Button>
                                     </TableCell>
                                     <TableCell align="left">
-                                        <IconButton onClick={(e) => this.handleMoreMenuClick(e, song.id)}>
+                                        <IconButton onClick={(e) => this.handleSongMenuClick(e, song.id)}>
                                             <MoreVertIcon />
                                         </IconButton>
-                                        <Popper open={this.state.moreMenu == song.id} role={undefined} anchorEl={this.state.anchorEl} transition>
+                                        <Popper open={this.state.moreMenu == song.id} role={undefined} anchorEl={this.state.anchorEl} placement="right-start" transition>
                                             {({ TransitionProps, placement }) => (
                                                 <Grow
                                                     {...TransitionProps}
-                                                    style={{ transformOrigin: placement === 'bottom' ? 'right top' : 'right bottom' }}
+                                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                                                 >
                                                     <Paper>
-                                                        <ClickAwayListener onClickAway={(e) => this.handleMoreMenuClose(e, song.id)}>
-                                                            <MenuList autoFocusItem={this.state.moreMenu == song.id} id="menu-list-grow" onKeyDown={(e) => this.handleMoreMenuListKeyDown(e, song.id)}>
-                                                                <MenuItem onClick={(e) => this.handleMoreMenuClose(e, song.id)}>Add to Playlist</MenuItem>
-                                                                <MenuItem onClick={(e) => this.handleMoreMenuClose(e, song.id)}>Play next</MenuItem>
+                                                        <ClickAwayListener onClickAway={(e) => this.handleSongMenuClose(e, song.id)}>
+                                                            <MenuList autoFocusItem={this.state.moreMenu == song.id} id="menu-list-grow" onKeyDown={(e) => this.handleSongMenuListKeyDown(e, song.id)}>
+                                                                { this.getPlaylistSubMenu(song) }
+                                                                <MenuItem onClick={(e) => this.handleSongMenuClose(e, song.id)}>Play next</MenuItem>
                                                             </MenuList>
                                                         </ClickAwayListener>
                                                     </Paper>
