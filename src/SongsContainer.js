@@ -34,16 +34,16 @@ class SongsContainer extends React.Component {
                     <Query query={gql`
                             query Songs($search: String) {
                                 searchSongs(search: $search) {
-                                id
-                                name
-                                album {
                                     id
                                     name
-                                }
-                                artist {
-                                    id
-                                    name
-                                }
+                                    album {
+                                        id
+                                        name
+                                    }
+                                    artist {
+                                        id
+                                        name
+                                    }
                                 }
                             }
                             `}

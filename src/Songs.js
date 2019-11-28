@@ -15,7 +15,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import PlayCircleFilledIcon from '@material-ui/icons/PlayCircleFilled';
+import gql from "graphql-tag";
 import React from 'react';
+import { Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
 
 class Songs extends React.Component {
@@ -110,7 +113,7 @@ class Songs extends React.Component {
                         >
                             <Paper>
                                 <MenuList autoFocusItem={this.state.subMenu === song.id} id="subMenu-list-grow" onKeyDown={(e) => this.handlePlaylistMenuListKeyDown(e, song.id)}>
-                                    { playlistMenuItems }
+                                    {playlistMenuItems}
                                     <MenuItem onClick={(e) => this.handleSongMenuClose(e, song.id)}>New Playlist</MenuItem>
                                 </MenuList>
                             </Paper>
@@ -130,6 +133,7 @@ class Songs extends React.Component {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
+                            <TableCell align="left"></TableCell>
                             <TableCell align="left">Artist</TableCell>
                             <TableCell align="left">Album</TableCell>
                             <TableCell align="left">Name</TableCell>
@@ -140,6 +144,32 @@ class Songs extends React.Component {
                         {
                             this.props.songs.slice(pageStart, pageEnd).map(song => (
                                 <TableRow key={song.id}>
+                                    <TableCell component="th">
+                                        <Mutation mutation={gql`
+                                                    mutation PlaySong($songId: ID) {
+                                                        playSong(songId: $songId) {
+                                                            id
+                                                            name
+                                                            artist {
+                                                                id
+                                                                name
+                                                            }
+                                                            album {
+                                                                id
+                                                                name
+                                                            }
+                                                        }
+                                                    }`}
+                                            variables={{ songId: song.id }}>
+                                            {
+                                                playSongMutation => (
+                                                    <IconButton onClick={() => playSongMutation()}>
+                                                        <PlayCircleFilledIcon />
+                                                    </IconButton>
+                                                )
+                                            }
+                                        </Mutation>
+                                    </TableCell>
                                     <TableCell component="th" scope="row">
                                         <Button color="primary" onClick={() => this.props.history.push(`/artists/${song.artist.id}`)}>
                                             {song.artist.name}
@@ -168,7 +198,7 @@ class Songs extends React.Component {
                                                     <Paper>
                                                         <ClickAwayListener onClickAway={(e) => this.handleSongMenuClose(e, song.id)}>
                                                             <MenuList autoFocusItem={this.state.moreMenu === song.id} id="menu-list-grow" onKeyDown={(e) => this.handleSongMenuListKeyDown(e, song.id)}>
-                                                                { this.getPlaylistSubMenu(song) }
+                                                                {this.getPlaylistSubMenu(song)}
                                                                 <MenuItem onClick={(e) => this.handleSongMenuClose(e, song.id)}>Play next</MenuItem>
                                                             </MenuList>
                                                         </ClickAwayListener>
