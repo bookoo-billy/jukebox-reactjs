@@ -46,10 +46,6 @@ class Songs extends React.Component {
         })
     }
 
-    handlePlaylistMenuClick(e, songId, playlistId) {
-
-    }
-
     handleSongMenuClick(e, songId) {
         this.setState({
             moreMenu: songId,
@@ -94,7 +90,27 @@ class Songs extends React.Component {
 
     getPlaylistSubMenu(song) {
         let playlistMenuItems = this.props.playlists.map((playlist) => (
-            <MenuItem key={playlist.id} onClick={(e) => this.handlePlaylistMenuClick(e, song.id, playlist.id)}>{playlist.name}</MenuItem>
+            <Mutation key={song.id + playlist.id} mutation={gql`
+                        mutation AddSongToPlaylist($playlistId: ID, $songId: ID) {
+                            addSongToPlaylist(playlistId: $playlistId, songId: $songId) {
+                                id
+                                name
+                                items {
+                                    timestamp
+                                    song {
+                                        id
+                                        name
+                                    }
+                                }
+                            }
+                        }`}
+                variables={{ playlistId: playlist.id, songId: song.id}}>
+                {
+                    addSongToPlaylistMutation => (
+                        <MenuItem key={playlist.id} onClick={(e) => addSongToPlaylistMutation()}>{playlist.name}</MenuItem>
+                    )
+                }
+            </Mutation>
         ));
 
         if (playlistMenuItems.length > 0) {
@@ -171,7 +187,7 @@ class Songs extends React.Component {
                                         </Mutation>
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        <Button color="primary" onClick={() => this.props.history.push(`/artists/${song.artist.id}`)}>
+                                        <Button color="secondary" onClick={() => this.props.history.push(`/artists/${song.artist.id}`)}>
                                             {song.artist.name}
                                         </Button>
                                     </TableCell>

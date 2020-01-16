@@ -1,4 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
@@ -21,6 +22,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from "react-router-dom";
+import { useAuth0 } from "./react-auth0-spa";
 
 const drawerWidth = 240;
 
@@ -47,6 +49,9 @@ const useStyles = makeStyles(theme => ({
         },
     },
     toolbar: theme.mixins.toolbar,
+    toolbarTitle: {
+        flexGrow: 1
+    },
     drawerPaper: {
         width: drawerWidth,
     },
@@ -60,6 +65,7 @@ function JukeboxAppBar(props) {
     const { container } = props;
     const classes = useStyles();
     const theme = useTheme();
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerToggle = () => {
@@ -124,9 +130,11 @@ function JukeboxAppBar(props) {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap>
+                    <Typography variant="h6" noWrap className={classes.toolbarTitle}>
                         Jukebox
-          </Typography>
+                    </Typography>
+                    {!isAuthenticated && (<Button href="#" variant="outlined" color="default" aligh="right" onClick={() => loginWithRedirect({})}>Log in</Button>)}
+                    {isAuthenticated && <Button href="#" variant="outlined" color="secondary" aligh="right" onClick={() => logout()}>Log out</Button>}
                 </Toolbar>
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
@@ -161,6 +169,8 @@ function JukeboxAppBar(props) {
                 </Hidden>
             </nav>
             <div className={classes.content}>
+                <div className={classes.toolbar} />
+                {props.children}
             </div>
         </div>
     );
