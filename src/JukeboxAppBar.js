@@ -21,7 +21,7 @@ import QueueMusicIcon from '@material-ui/icons/QueueMusic';
 import SettingsIcon from '@material-ui/icons/Settings';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { useAuth0 } from "./react-auth0-spa";
 
 const drawerWidth = 240;
@@ -31,20 +31,20 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
     },
     drawer: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: drawerWidth,
             flexShrink: 0,
         },
     },
     appBar: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
         },
     },
     menuButton: {
         marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             display: 'none',
         },
     },
@@ -131,7 +131,7 @@ function JukeboxAppBar(props) {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap className={classes.toolbarTitle}>
-                        Jukebox
+                        <Link to="/">Jukebox</Link>
                     </Typography>
                     {!isAuthenticated && (<Button href="#" variant="outlined" color="default" aligh="right" onClick={() => loginWithRedirect({})}>Log in</Button>)}
                     {isAuthenticated && <Button href="#" variant="outlined" color="secondary" aligh="right" onClick={() => logout()}>Log out</Button>}
@@ -139,7 +139,7 @@ function JukeboxAppBar(props) {
             </AppBar>
             <nav className={classes.drawer} aria-label="mailbox folders">
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
+                <Hidden mdUp implementation="css">
                     <Drawer
                         container={container}
                         variant="temporary"
@@ -156,7 +156,7 @@ function JukeboxAppBar(props) {
                         {drawer}
                     </Drawer>
                 </Hidden>
-                <Hidden xsDown implementation="css">
+                <Hidden smDown implementation="css">
                     <Drawer
                         classes={{
                             paper: classes.drawerPaper,

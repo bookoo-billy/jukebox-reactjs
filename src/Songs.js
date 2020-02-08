@@ -20,6 +20,7 @@ import gql from "graphql-tag";
 import React from 'react';
 import { Mutation } from "react-apollo";
 import { withRouter } from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
 
 class Songs extends React.Component {
 
@@ -140,13 +141,22 @@ class Songs extends React.Component {
         </MenuItem>);
     }
 
+    useStyles() {
+        return makeStyles({
+            table: {
+                minWidth: 500,
+            },
+        });  
+    }
+
     render() {
         const pageStart = this.state.page * this.state.rowsPerPage;
         const pageEnd = pageStart + this.state.rowsPerPage;
+        const classes = this.useStyles();
 
         return (
             <Paper>
-                <Table aria-label="simple table">
+                <Table aria-label="Songs Table" className={classes.table}>
                     <TableHead>
                         <TableRow>
                             <TableCell align="left"></TableCell>
